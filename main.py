@@ -7,7 +7,7 @@ from data import make_prompts_dict
 from pathlib import Path
 
 BASE_URL = "http://localhost:11434"
-TRIALS = 5
+TRIALS = 3
 RESULT_PATH = Path("./results")
 RESULT_PATH.mkdir(exist_ok=True)
 
