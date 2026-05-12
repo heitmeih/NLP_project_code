@@ -7,25 +7,24 @@ from data import make_prompts_dict
 from pathlib import Path
 
 BASE_URL = "http://localhost:11434"
-TRIALS = 1
+TRIALS = 5
 RESULT_PATH = Path("./results")
 RESULT_PATH.mkdir(exist_ok=True)
 
 thinking_models = [
     "gemma4:e2b",
-    "qwen3.5:0.8b",
     "qwen3.5:9b",
 ]
-non_thinking_models = ["llama3.2:3b", "llama3.1:8b"]
+non_thinking_models = ["qwen3.5:0.8b", "llama3.2:3b", "llama3.1:8b"]
 
 # tuple of model_name, do_thinking
 # thinking models will be run with thinking off and on
-models = list(
+models = [(m, False) for m in non_thinking_models] + list(
     zip(
         map(str, np.repeat(thinking_models, 2)),
-        map(bool, np.tile([True, False], len(thinking_models))),
+        map(bool, np.tile([False, True], len(thinking_models))),
     )
-) + [(m, False) for m in non_thinking_models]
+)
 
 
 class Prompter(ABC):
@@ -113,7 +112,7 @@ class OllamaPrompter(Prompter):
 def main():
     print("Num Trials:", TRIALS, "\nNum Models:", len(models))
 
-    for model_name, do_thinking in models[:1]:
+    for model_name, do_thinking in models:
         print("\n\nModel:", model_name, "   Thinking:", do_thinking)
 
         prompter = OllamaPrompter(model_name, BASE_URL, do_thinking)
