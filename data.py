@@ -89,5 +89,3 @@ def make_prompts_dict() -> Prompts:
         ]
         for cat, questions in raw_data.items()
     }
-
-print(make_prompts_dict())
